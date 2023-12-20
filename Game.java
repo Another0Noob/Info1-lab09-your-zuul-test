@@ -83,37 +83,48 @@ public class Game
         System.out.println();
     }
 
-
     /**
      * Given a command, process (that is: execute) the command.
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private String processCommand(Command command) 
+    private String processCommand(Command command)
     {
         boolean wantToQuit = false;
 
         if(command.isUnknown()) {
-            return "I don't know what you mean...";       
+            return "I don't know what you mean...";
         }
         String result = null;
         String commandWord = command.getCommandWord();
         // see https://docs.oracle.com/javase/8/docs/technotes/guides/language/strings-switch.html
-        
+
         switch(commandWord){
-            case "help": 
-                result = printHelp();
+            case "help":
+                result = CommandWord.getCommandWords();
                 break;
-            case "go": 
-                result = goRoom(command); 
+            case "go":
+                result = goRoom(command);
                 break;
-            case "quit": 
-                result = quit(command); 
+            case "quit":
+                result = quit(command);
+                break;
+            case "look":
+                result = currentRoom.getDescription();
+                break;
+            case "eat":
+                result = printEat();
                 break;
         }
 
         return result ;
     }
+
+    /**
+     * "Quit" was entered. Check the rest of the command to see
+     * whether we really quit the game.
+     * @return true, if this command quits the game, false otherwise.
+     */
     private String quit(Command command)
     {
         if(command.hasSecondWord()) {
@@ -123,24 +134,29 @@ public class Game
             return null;  // signal that we want to quit
         }
     }
-    // implementations of user commands:
 
     /**
      * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
+     * Here we print some stupid, cryptic message and a list of the
      * command words.
      */
-    private String printHelp() 
+    private String printHelp()
     {
-        return "You are lost. You are alone. You wander"
-        +"\n"
-        + "around at the university."
-        +"\n"
-        +"\n"
-        +"Your command words are:"
-        +"\n"
-        +"   go quit help"
-        +"\n";
+    return "You are lost. You are alone. You wander"
+            +"\n"
+            + "around at the university."
+            +"\n"
+            +"\n"
+            +"Your command words are:"
+            +"\n"
+            +"   go quit help"
+            +"\n";
+    }
+
+    // implementations of user commands:
+    private String printEat(){
+        return "You have eaten now and are not hungry any more"
+                + "\n";
     }
 
     /** 
@@ -170,12 +186,4 @@ public class Game
             return result.toString() + "\n";
         }
     }
-
-
-    /** 
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
-     */
-
 }
