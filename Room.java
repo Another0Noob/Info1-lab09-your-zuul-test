@@ -22,7 +22,7 @@ public class Room {
     }
 
     public static Room createRooms(Game game) {
-        Room outside, theater, pub, lab, office;
+        Room outside, theater, pub, lab, office, cellar;
 
         // create the rooms
         outside = new Room("outside the main entrance of the university");
@@ -30,6 +30,7 @@ public class Room {
         pub = new Room("in the campus pub");
         lab = new Room("in a computing lab");
         office = new Room("in the computing admin office");
+        cellar = new Room("in the cellar");
 
         // initialize room exits
         outside.addExit("north", theater);
@@ -39,6 +40,9 @@ public class Room {
         theater.addExit("west", outside);
 
         pub.addExit("north", outside);
+        pub.addExit("down", cellar);
+
+        cellar.addExit("up", pub);
 
         lab.addExit("west", outside);
         lab.addExit("south", office);
