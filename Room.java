@@ -33,21 +33,22 @@ public class Room {
         cellar = new Room("in the cellar");
 
         // initialize room exits
-        outside.addExit("north", theater);
-        outside.addExit("east", lab);
-        outside.addExit("south", pub);
+        outside.addExit("east", theater);
+        outside.addExit("south", lab);
+        outside.addExit("west", pub);
 
         theater.addExit("west", outside);
 
-        pub.addExit("north", outside);
+        pub.addExit("est", outside);
         pub.addExit("down", cellar);
 
         cellar.addExit("up", pub);
+        lab.addExit("north", outside);
+        lab.addExit("east", office);
 
-        lab.addExit("west", outside);
-        lab.addExit("south", office);
+        office.addExit("west", lab);
 
-        office.addExit("north", lab);
+
 
         return outside; // start game outside
     }
