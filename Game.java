@@ -106,6 +106,9 @@ public class Game
             case "look":
                 result = printLook();
                 break;
+            case "eat":
+                result = printEat();
+                break;
             case "go": 
                 result = goRoom(command); 
                 break;
@@ -129,6 +132,11 @@ public class Game
     private String printLook()
     {
         return "You are " + currentRoom.getDescription();
+    }
+
+    private String printEat()
+    {
+        return "You have eaten now and are not hungry any more";
     }
 
     private String printHelp() 

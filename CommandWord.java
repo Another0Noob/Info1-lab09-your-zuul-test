@@ -3,7 +3,8 @@ public enum CommandWord
     GO("go"),
     QUIT("quit"),
     HELP("help"),
-    LOOK("look"); // New command word
+    LOOK("look"),
+    EAT("eat"); // New command word
 
     private String word;
 
