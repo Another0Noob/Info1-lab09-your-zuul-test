@@ -103,6 +103,8 @@ public class Game
         switch(commandWord){
             case "help": 
                 result = printHelp();
+            case "look":
+                result = printLook();
                 break;
             case "go": 
                 result = goRoom(command); 
@@ -124,12 +126,11 @@ public class Game
         }
     }
     // implementations of user commands:
+    private String printLook()
+    {
+        return "You are " + currentRoom.getDescription();
+    }
 
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
-     * command words.
-     */
     private String printHelp() 
     {
         return "You are lost. You are alone. You wander"
