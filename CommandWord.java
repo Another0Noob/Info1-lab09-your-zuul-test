@@ -22,7 +22,9 @@ public enum CommandWord
 
     EAT("eat"),
 
-    PANIC("panic");
+    PANIC("panic"),
+
+    TAKE("take");
 
     private String word;
     private CommandWord(String word){
