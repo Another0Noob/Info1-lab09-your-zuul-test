@@ -123,6 +123,15 @@ public class Game
             case "take":
                 result = takeItems(command);
                 break;
+            case "inventory":
+                result = getInventory();
+                break;
+            case "drop":
+                result = dropItems(command);
+                break;
+            case "dropall":
+                result = dropAllItems();
+
         }
 
         return result ;
@@ -199,8 +208,30 @@ public class Game
         inventory.add(item);
     }
 
-    public List<Items> getItems() {
-        return inventory;
+    public Items getItem(String itemName) {
+        for (Items item : inventory) {
+            if (item.getName().equals(itemName)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public String getInventory() {
+        StringBuilder returnString = new StringBuilder("Inventory:");
+        for(Items item : inventory) {
+            returnString.append(item.getName()).append(" weight: ").append(item.getWeight()).append("\n");
+        }
+        returnString.append("\nTotal Weight: ").append(calculateTotalWeight());
+        return returnString.toString();
+    }
+
+    public int calculateTotalWeight() {
+        int totalWeight = 0;
+        for (Items item : inventory) {
+            totalWeight += item.getWeight();
+        }
+        return totalWeight;
     }
 
     private String takeItems(Command command) {
@@ -218,6 +249,28 @@ public class Game
             inventory.add(nextItem);
             return "You have taken " + itemName + ".\n";
         }
+    }
+
+    private String dropItems(Command command) {
+        if (!command.hasSecondWord()) {
+            return "Drop what?";
+        }
+
+        String itemName = command.getSecondWord();
+        Items nextItem = getItem(itemName);
+
+        if (nextItem == null) {
+            return "You don't have " + itemName + " in your inventory!";
+        } else {
+            inventory.remove(nextItem);
+            return "You have dropped " + itemName + ".\n";
+        }
+    }
+
+    public String dropAllItems() {
+        String returnString = "You have dropped all items in your inventory.\n";
+        inventory.clear();
+        return returnString;
     }
 
 

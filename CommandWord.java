@@ -24,7 +24,11 @@ public enum CommandWord
 
     PANIC("panic"),
 
-    TAKE("take");
+    TAKE("take"),
+
+    DROP("drop"),
+
+    INVENTORY("inventory");
 
     private String word;
     private CommandWord(String word){
