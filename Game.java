@@ -23,7 +23,6 @@ public class Game
     private Parser parser;
     private Room currentRoom;
     private List<Items> inventory = new ArrayList<>();
-
     private int maxWeight = 100;
 
 
