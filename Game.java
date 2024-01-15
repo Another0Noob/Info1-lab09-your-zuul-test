@@ -24,6 +24,8 @@ public class Game
     private Room currentRoom;
     private List<Items> inventory = new ArrayList<>();
 
+    private int maxWeight = 100;
+
 
     /**
      * Create the game and initialise its internal map.
@@ -244,6 +246,8 @@ public class Game
 
         if (nextItem == null) {
             return "There is no " + itemName + " in this room!";
+        } else if (calculateTotalWeight() + nextItem.getWeight() > maxWeight) {
+            return "You can't carry that much weight!";
         } else {
             currentRoom.removeItem(nextItem);
             inventory.add(nextItem);
