@@ -79,6 +79,6 @@ public class Room {
         office.addItem(new Items("pen", "a pen to write", 1));
         cellar.addItem(new Items("wine", "a wine to drink", 3));
 
-        return outside; // start game outside
+        return outside;
     }
 }

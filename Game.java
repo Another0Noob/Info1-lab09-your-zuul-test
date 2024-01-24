@@ -21,26 +21,25 @@ import java.util.List;
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
-    private List<Items> inventory = new ArrayList<>();
-    private int maxWeight = 100;
+    private Player player;
+
 
 
     /**
      * Create the game and initialise its internal map.
      */
-    public Game() 
+    public Game()
     {
-        currentRoom = Room.createRooms(this);  // start game outside
+        player = new Player();
         parser = new Parser();
     }
 
     /**
      *  Main play routine.  Loops until end of play.
      */
-    public void play() 
+    public void play()
     {
-        printWelcome();
+        System.out.println(new Welcome().processCommand(player));
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
@@ -48,7 +47,7 @@ public class Game
         boolean finished = false;
         while (! finished) {
             Command command = parser.getCommand();
-            String output = processCommand(command);
+            String output = command.processCommand(player);
             finished = (null == output);
             if (!finished)
             {
@@ -67,7 +66,7 @@ public class Game
      */
     public String processInputLine(String line){
         Command command = parser.getCommand(line);
-        return processCommand(command);
+        return command.processCommand(player);
     }
 
     /**
@@ -173,8 +172,7 @@ public class Game
 
     // implementations of user commands:
     private String printEat(){
-        return "You have eaten now and are not hungry any more"
-                + "\n";
+        return "You have eaten now and are not hungry any more" + "\n";
     }
 
     /** 

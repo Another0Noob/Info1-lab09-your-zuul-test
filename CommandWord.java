@@ -8,7 +8,15 @@
  * @author  Michael Kölling and David J. Barnes
  * @version 2016.02.29
  */
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.function.Supplier;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.function.BiFunction;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 public enum CommandWord
 {
 
@@ -17,6 +25,10 @@ public enum CommandWord
     QUIT("quit"),
 
     HELP("help"),
+
+    WELCOME("welcome"),
+
+    UNKNOWN("unknown"),
 
     LOOK("look"),
 
@@ -29,6 +41,22 @@ public enum CommandWord
     DROP("drop"),
 
     INVENTORY("inventory");
+
+    private static Map<CommandWord, BiFunction<CommandWord,String,Command>> commandFactories = new LinkedHashMap<>();
+
+    static {
+        commandFactories.put(GO, (w1,w2)-> new Go(w1,w2));
+        commandFactories.put(QUIT, (w1,w2)-> new Quit(w1,w2));
+        commandFactories.put(HELP, (w1,w2)-> new Help(w1,w2));
+        commandFactories.put(WELCOME, (w1,w2)-> new Welcome(w1,w2));
+        commandFactories.put(UNKNOWN, (w1,w2)-> new Unknown(w1,w2));
+        commandFactories.put(LOOK, (w1,w2)-> new Look(w1,w2));
+        commandFactories.put(EAT, (w1,w2)-> new Eat(w1,w2));
+        commandFactories.put(PANIC, (w1,w2)-> new Panic(w1,w2));
+        commandFactories.put(TAKE, (w1,w2)-> new Take(w1,w2));
+        commandFactories.put(DROP, (w1,w2)-> new Drop(w1,w2));
+        commandFactories.put(INVENTORY, (w1,w2)-> new Inventory(w1,w2));
+    }
 
     private String word;
     private CommandWord(String word){
@@ -47,7 +75,7 @@ public enum CommandWord
      */
     public static boolean isCommand(String aString)
     {
-        CommandWord[] validCommands = values();
+        CommandWord[] validCommands = CommandWord.class.getEnumConstants();
         for(CommandWord cw: validCommands) {
             if(cw.toString().equals(aString))
                 return true;
@@ -68,12 +96,24 @@ public enum CommandWord
                 +"\n";
     }
 
-    public static String printCommands(){
-        ArrayList<String> commands = new ArrayList<>();
-        for (CommandWord myVar : CommandWord.values()) {
-            commands.add(myVar.toString());
-        }
-        String commandsString = String.join(", ", commands);
-        return commandsString;
+    public static String printCommands() {
+        List<String> commands = Arrays.stream(values())
+                .map(CommandWord::toString)
+                .toList();
+        return String.join(", ", commands);
     }
+
+    public static Command buildCommand(String firstWord, String secondWord){
+        CommandWord key = forString(firstWord);
+        return commandFactories.get(key).apply(key, secondWord);
+    }
+
+public static CommandWord forString(String commandWord){
+        for(CommandWord cw: values()) {
+            if(cw.toString().equals(commandWord))
+                return cw;
+        }
+        return UNKNOWN;
+    }
+
 }
